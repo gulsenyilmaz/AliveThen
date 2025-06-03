@@ -1,0 +1,114 @@
+[
+    {
+      "ConstituentID": 1,
+      "DisplayName": "Robert Arneson",
+      "ArtistBio": "American, 1930–1992",
+      "Nationality": "American",
+      "Gender": "male",
+      "BeginDate": 1930,
+      "EndDate": 1992,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 2,
+      "DisplayName": "Doroteo Arnaiz",
+      "ArtistBio": "Spanish, born 1936",
+      "Nationality": "Spanish",
+      "Gender": "male",
+      "BeginDate": 1936,
+      "EndDate": 2000,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 3,
+      "DisplayName": "Bill Arnold",
+      "ArtistBio": "American, born 1941",
+      "Nationality": "American",
+      "Gender": "male",
+      "BeginDate": 1941,
+      "EndDate": 1980,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 4,
+      "DisplayName": "Charles Arnoldi",
+      "ArtistBio": "American, born 1946",
+      "Nationality": "American",
+      "Gender": "male",
+      "BeginDate": 1946,
+      "EndDate": 1990,
+      "Wiki QID": "Q1063584",
+      "ULAN": "500027998"
+    },
+    
+    
+    {
+      "ConstituentID": 10,
+      "DisplayName": "Irene Aronson",
+      "ArtistBio": "American, born Germany 1918",
+      "Nationality": "American",
+      "Gender": "female",
+      "BeginDate": 1918,
+      "EndDate": 1976,
+      "Wiki QID": "Q19748568",
+      "ULAN": "500042413"
+    },
+    {
+      "ConstituentID": 11,
+      "DisplayName": "Jean (Hans) Arp",
+      "ArtistBio": "French, born Germany (Alsace). 1886–1966",
+      "Nationality": "Danish",
+      "Gender": "male",
+      "BeginDate": 1886,
+      "EndDate": 1966,
+      "Wiki QID": "Q153739",
+      "ULAN": "500031000"
+    },
+    {
+      "ConstituentID": 12,
+      "DisplayName": "Jüri Arrak",
+      "ArtistBio": "Estonian, born 1936",
+      "Nationality": "Danish",
+      "Gender": "male",
+      "BeginDate": 1936,
+      "EndDate": 1997,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 13,
+      "DisplayName": "José Arellano Fischer",
+      "ArtistBio": "Mexican, 1911–1995",
+      "Nationality": "Spanish",
+      "Gender": "male",
+      "BeginDate": 1911,
+      "EndDate": 1995,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 15,
+      "DisplayName": "Folke Arstrom",
+      "ArtistBio": "Swedish, 1907–1997",
+      "Nationality": "Spanish",
+      "Gender": "male",
+      "BeginDate": 1907,
+      "EndDate": 1997,
+      "Wiki QID": null,
+      "ULAN": null
+    },
+    {
+      "ConstituentID": 16,
+      "DisplayName": "Cristobal Arteche",
+      "ArtistBio": "Spanish, 1900–1964",
+      "Nationality": "Spanish",
+      "Gender": "male",
+      "BeginDate": 1900,
+      "EndDate": 1964,
+      "Wiki QID": null,
+      "ULAN": null
+    }
+]
