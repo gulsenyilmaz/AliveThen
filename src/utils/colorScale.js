@@ -5,10 +5,11 @@
  */
 export function ageToColor(age, maxAge = 100) {
     const clampedAge = Math.min(age, maxAge);
-  
-    const r = 50 + clampedAge * 1.9;   // 50 → 240
-    const g = 200 - clampedAge * 0.7;  // 200 → 130
-    const b = 50 + clampedAge * 0.5;   // 50 → 100
-  
-    return [Math.round(r), Math.round(g), Math.round(b)];
+    const t = clampedAge / maxAge;  // 0 → genç, 1 → yaşlı
+
+    const r = Math.round((1 - t) * 80 + t * 50);
+    const g = Math.round((1 - t) * 220 + t * 50);
+    const b = Math.round((1 - t) * 120 + t * 50);
+
+    return [r, g, b];
   }
