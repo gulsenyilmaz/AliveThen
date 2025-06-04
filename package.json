@@ -10,13 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl/geo-layers": "^9.1.12",
     "@deck.gl/layers": "^9.1.12",
     "@deck.gl/react": "^9.1.12",
     "deck.gl": "^9.1.12",
     "mapbox-gl": "^3.12.0",
+    "plotly.js": "^3.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-map-gl": "^7.0.18",
+    "react-plotly.js": "^2.6.0",
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {

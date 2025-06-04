@@ -1,15 +1,14 @@
 /**
- * Returns a box color based on the artist's age.
- * Younger artists → vivid green
- * Older artists → pale yellow
+ * Returns a color based on gender.
+ * Female → pastel pink
+ * All others → pastel blue
  */
-export function ageToColor(age, maxAge = 100) {
-    const clampedAge = Math.min(age, maxAge);
-    const t = clampedAge / maxAge;  // 0 → genç, 1 → yaşlı
-
-    const r = Math.round((1 - t) * 80 + t * 50);
-    const g = Math.round((1 - t) * 220 + t * 50);
-    const b = Math.round((1 - t) * 120 + t * 50);
-
-    return [r, g, b];
+export function ageToColor(age, gender = "Unknown", timeSinceDeath = 0) {
+  if (gender === "female") {
+    // Pastel pink
+    return [255, 105, 180, 150+timeSinceDeath]; // light pink (RGB for LightPink)
+  } else {
+    // Pastel blue
+    return [70, 130, 180, 150+timeSinceDeath]; // light blue (RGB for LightBlue)
   }
+}
