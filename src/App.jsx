@@ -66,17 +66,17 @@ function App() {
     nationalityCounts[nationality]++;
 
     const age = debouncedYear - h.BirthYear;
+               
 
     return {
       name: h.DisplayName,
       cId:h.ConstituentID,
       nationality: h.Nationality,
-      bio: `( ${h.BirthYear} - ${h.DeathYear} )`,
+      bYear: h.BirthYear,
+      dYear: h.DeathYear,
       age:age,
-      numOfArtworks: h.NumOfArtworks,
       position: [latOffset, lonOffset],
       tposition: [latOffset+Math.random()*10, lonOffset+Math.random()*10],
-      elevation: age * elevationFactor,
       fillColor: ageToColor(age, h.Gender, h.DeathYear-debouncedYear)
     };
   });
@@ -98,12 +98,31 @@ function App() {
     getTargetPosition: d => d.tposition,      // yükseğe doğru
     getSourceColor:  d => d.fillColor,
     getTargetColor: [70, 130, 180, 0],
-    getWidth: d => d.elevation,
+    getWidth: d => d.age * elevationFactor,
     pickable: true,
   })
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Header - Başlık + Açıklama + Slider + İstatistik */}
+      <div style={{
+        position: "fixed",
+        top: "0.5rem",
+        left: "50%",
+        transform: "translateX(-50%)",
+        backgroundColor: "rgba(91, 90, 90, 0.31)",
+        color: "#fff",
+        padding: "1rem 2rem",
+        borderRadius: "8px",
+        textAlign: "center",
+        fontFamily: "Helvetica, serif",
+        zIndex: 110
+      }}>
+        <p style={{ fontSize: "1.1rem", margin: 0 }}>
+          Explore the geographic presence of artists who were alive in a given year.  
+          Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
+        </p>
+      </div>
       <div style={{
         position: "absolute",
         top: "1rem",
@@ -172,22 +191,7 @@ function App() {
         }}>
           <div><strong>Countries:</strong> {Object.keys(nationalityCounts).length}</div>
         </div>
-      {/* Header - Başlık + Açıklama + Slider + İstatistik */}
-    {/* <div style={{
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
-        color: "#fff",
-        padding: "1rem",
-        alignItems: "center",
-        textAlign: "center",
-        fontFamily: "Helvetica, serif",
-        zIndex: 11
-      }}>
-        <h1 style={{ margin: 0, fontSize: "2rem" }}>Alive Then</h1>
-        <p style={{ fontSize: "1.1rem", marginTop: "0.5rem" }}>
-          Explore the geographic presence of artists who were alive in a given year.
-          Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
-        </p>
-      </div>*/}
+      
       
        
 
@@ -268,7 +272,7 @@ function App() {
               setSelectedArtist({
                 id: object.cId,
                 name: object.name,
-                bio: object.bio,
+                bYear:object.bYear,
                 age: object.age
               });
             }
@@ -276,7 +280,7 @@ function App() {
         >
           <Map
             mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/dark-v11"
+            mapStyle="mapbox://styles/mapbox/light-v11"
           />
         </DeckGL>
       </div>
@@ -306,7 +310,7 @@ function App() {
           borderBottom: "1px solid #ccc",
           zIndex: 1
         }}>
-          <h3 style={{ margin: 0 }}>{selectedArtist.name} / {selectedArtist.age}</h3>
+          <h3 style={{ margin: 0 }}>{selectedArtist.name} was {selectedYear-selectedArtist.bYear} years old in {selectedYear}</h3>
         </div>
 
         {artworks.length > 0 ? (
