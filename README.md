@@ -1,6 +1,6 @@
 # AliveThen
 
-**AliveThen** is an interactive 3D time-map that visualizes which artists were alive on Earth at any given year.
+**AliveThen** is an interactive data visualization project that maps artists (and other cultural figures) who were alive in a given year, based on the MoMA collection and extended metadata.
 
 Inspired by the Museum of Modern Art (MoMA) collection and designed for extensibility, this project allows users to explore the lives of artists, thinkers, and other figures by time and geography.
 
@@ -8,7 +8,7 @@ Inspired by the Museum of Modern Art (MoMA) collection and designed for extensib
 
 - Visualizes artists on a 3D globe using **Deck.gl** and **Mapbox**
 - Slider to select a year and dynamically update who was alive
-- Each artist appears as a vertical box (the taller the box, the older the person)
+- Animated arcs show geographic distribution by year.
 - Spiral layout prevents overlap when multiple artists share a nationality
 - Tooltips show artist name and age
 
@@ -16,12 +16,12 @@ Inspired by the Museum of Modern Art (MoMA) collection and designed for extensib
 
 ![screenshot](AliveThen_Screenshot.png) <!-- Add when available -->
 ![screenshot](AliveThen_Screenshot_01.png) <!-- Add when available -->
-## 🚀 Tech Stack
 
-- **React** + **Vite**
-- **Deck.gl** for 3D rendering
-- **Mapbox** for interactive maps
-- **Custom spiral layout** for same-country positioning
+## 🚀 Technologies
+
+- Frontend: React, Deck.gl, Plotly.js
+- Backend: FastAPI
+- Containerization: Docker, Docker Compose
 
 ## 🧠 Future Plans
 
@@ -30,21 +30,31 @@ Inspired by the Museum of Modern Art (MoMA) collection and designed for extensib
 - Mini timeline markers for each artwork
 - Detail panel for selected artist
 
-## 📦 Setup
+## 🧠 DATA SOURCE
+
+- Museum of Modern Art Collection: https://github.com/MuseumofModernArt/collection
+
+## Development Notes
+- The frontend queries data from the backend on port 8000.
+
+- Mapbox is used for base map layers. Add your Mapbox token to .env:
+    VITE_MAPBOX_TOKEN=your_token_here
+
+## 📦 Running the Project (with Docker)
+
+Make sure you have Docker and Docker Compose installed.
 
 ```bash
-git clone https://github.com/gulsenyilmaz/AliveThen.git
-cd AliveThen
-npm install
-npm run dev
+git clone https://github.com/yourusername/alivethen.git
+cd alivethen
+docker compose up --build
 
 
-You'll need a .env file with your Mapbox token:
-VITE_MAPBOX_TOKEN=your_token_here
+AliveThen/
+│
+├── backend/           # FastAPI app and SQLite DB
+├── frontend/          # React + Deck.gl app
+├── docker-compose.yml
+├── .dockerignore
+└── README.md
 
-📁 Data
-Due to GitHub's file size limitations, the full artists.json is not included. You can download it from this link and place it in the /src/data/ directory.
-
-Alternatively, use the included sample_artists.json to explore functionality.
-
-Feel free to reach out or fork the project to build your own time-map!

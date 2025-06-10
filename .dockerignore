@@ -1,0 +1,27 @@
+# General
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.DS_Store
+.env
+.env.*
+
+# Python virtual environments
+venv/
+ENV/
+env/
+
+# Node dependencies and build output
+frontend/node_modules
+frontend/dist
+
+# OS and editor files
+*.swp
+*.swo
+*.log
+.idea/
+.vscode/
+*.iml
