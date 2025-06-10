@@ -169,7 +169,7 @@ function App() {
         >
           <Map
             mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/dark-v11"
+            mapStyle="mapbox://styles/mapbox/light-v11"
           />
         </DeckGL>
       </div>
