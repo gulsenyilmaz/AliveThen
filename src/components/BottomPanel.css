@@ -1,0 +1,45 @@
+.bottom-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right:0;
+  max-height: 50vh;
+  min-height: 25vh;
+  background-color: #333;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%); /* Başlangıçta gizli */
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom-panel.open {
+  transform: translateY(0); /* Açıldığında görünür */
+}
+
+.bottom-content {
+  padding: 1rem;
+  width: 100%;
+  color: white;
+  overflow-y: auto;
+}
+
+/* Kulakçık (tab) */
+.bottom-tab {
+  position: absolute;
+  left: 50%;
+  top: -30px;
+  transform: translateX(-50%);
+  height: 30px;
+  width: 80px;
+  background-color: #333;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  user-select: none;
+}

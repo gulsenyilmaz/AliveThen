@@ -38,17 +38,18 @@ def get_humans_by_year(year: int = Query(..., description="Selected year")):
     return [dict(row) for row in results]
 
 
-@app.get("/artworks/{constituent_id}")
-def get_artworks(constituent_id: int, year: int = Query(..., description="Selected year")):
-    conn = sqlite3.connect("artworks.db")
+@app.get("/works/{constituent_id}")
+def get_works(constituent_id: int, year: int = Query(..., description="Selected year")):
+    conn = sqlite3.connect("works.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     cur.execute("""
         SELECT ObjectID, Title, Date, Medium, ImageURL, URL
-        FROM artworks
+        FROM works
         WHERE ConstituentID = ?
         AND CAST(Date AS INTEGER) <= ?
+        ORDER BY CAST(Date AS INTEGER) ASC
     """, (constituent_id, year))
 
     results = [dict(row) for row in cur.fetchall()]

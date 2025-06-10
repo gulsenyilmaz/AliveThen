@@ -40,3 +40,92 @@
 .read-the-docs {
   color: #888;
 }
+
+/* app.css */
+
+/* Genel konteyner */
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* Açıklama kutusu */
+.header-description {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  background-color: rgba(91, 90, 90, 0);
+  display: flex;
+  justify-content: center; /* içeriği ortalar */
+  
+  border-radius: 8px;
+  text-align: center;
+  font-family: Tahoma, serif;
+  z-index: 110;
+}
+
+.header-description p {
+  font-size: 1rem;
+  color: rgb(255, 255, 255);
+  margin: 0;
+}
+
+/* Yıl seçici slider kutusu */
+.year-slider {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 80vw;
+  background-color: rgba(20, 20, 20, 0.7);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.year-slider label {
+  color: #f0f0f09a;
+  font-size: 1.5rem;
+  display: flexbox;
+  margin-bottom: 0.5rem;
+}
+
+.year-slider input[type="range"] {
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(to right, #4683b456, #4682B4);
+  border-radius: 0px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.year-slider input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 5%;
+  background: #97a7b49d;
+  border: 2px solid #4682B4;
+  transition: transform 0.2s ease;
+}
+
+.year-slider input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.year-slider input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7d7d7d9c;
+  border: 2px solid #676767;
+}
+
+
+
+

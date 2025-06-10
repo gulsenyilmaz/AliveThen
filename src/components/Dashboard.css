@@ -1,0 +1,21 @@
+.sidebar {
+  position: absolute;
+  top: 1rem; /* info-banner ve year-slider'dan aşağıda başlasın */
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.stats-box {
+  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  width: 15vw;
+  background-color: rgba(84, 83, 83, 0.7);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 2rem;
+  line-height: 1.4;
+  z-index: 11;
+}
