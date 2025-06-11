@@ -16,26 +16,17 @@ function Dashboard({humans, nationalityCounts, selectedYear}) {
   return (
     <>
       <div className="sidebar">
-          {/* İstatistik kutucuğu */}
-          <div className="stats-box">
-            <div><strong>Artists alive:</strong> {aliveCount}</div>
-          </div>
-          <div className="stats-box">
-            <div><strong>Female:</strong> {femaleCount} ({femalePct}%)</div>
-          </div>
-          <div className="stats-box">
-            <div><strong>Countries:</strong> {Object.keys(nationalityCounts).length}</div>
-          </div>
+          
       
           {/* Bar chart */}
           <div className="stats-box">
                 <Plot
                   data={[
                     {
-                      x: nationalityValues,
-                      y: nationalityLabels,
-                      type: 'bar',
-                      orientation: 'h',
+                      y: nationalityValues,
+                      x: nationalityLabels,
+                      type: 'line',
+                      // orientation: 'h',
                       marker: { color: 'steelblue' }
                     }
                   ]}
@@ -59,7 +50,7 @@ function Dashboard({humans, nationalityCounts, selectedYear}) {
                     },
                     yaxis: {
                       color: "white",
-                      autorange: "reversed",
+                      // autorange: "reversed",
                       tickfont: {
                         color: "white"
                       },
@@ -67,7 +58,7 @@ function Dashboard({humans, nationalityCounts, selectedYear}) {
                         font: { color: "white" }
                       }
                     },
-                    margin: { t: 40, l: 60, r: 20, b: 30 },
+                    margin: { t: 40, l: 30, r: 20, b: 60 },
                     paper_bgcolor: 'rgba(0, 0, 0, 0)',
                     plot_bgcolor: 'rgba(0, 0, 0, 0)',
                     font: {
@@ -78,7 +69,17 @@ function Dashboard({humans, nationalityCounts, selectedYear}) {
               style={{ width: "100%" }}
             />
           </div>
+          <div className="stats-box">
+            <div><strong>Artists alive:</strong> {aliveCount}</div>
+          </div>
+          <div className="stats-box">
+            <div><strong>Female:</strong> {femaleCount} ({femalePct}%)</div>
+          </div>
+          <div className="stats-box">
+            <div><strong>Countries:</strong> {Object.keys(nationalityCounts).length}</div>
+          </div>
       </div>
+      {/* <div className="cornerbar"></div> */}
     </>
   );
 }

@@ -1,8 +1,9 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .logo {
@@ -40,6 +41,12 @@
 .read-the-docs {
   color: #888;
 }
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
 
 /* app.css */
 
@@ -74,58 +81,81 @@
   margin: 0;
 }
 
-/* Yıl seçici slider kutusu */
-.year-slider {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 80vw;
-  background-color: rgba(20, 20, 20, 0.7);
+
+.app-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main-content {
+  display: flex;
+  flex: 1; /* Bu şart */
+}
+
+.left-panel-container {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  height: 100%;
+  z-index: 100;
+}
+
+.left-panel {
+  flex: 1;
+  background-color: rgba(40, 40, 40, 0.9);
   padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  z-index: 1000;
-  font-family: 'Helvetica', sans-serif;
+  box-sizing: border-box;
+  border: 1px solid #7474748d;
 }
 
-.year-slider label {
+.leftcorner-panel {
+  height: 12vh;
+  background-color: rgba(40, 40, 40, 0.9);
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 1px solid #7474748d;
+
+  display: flex;              /* Flex konteyner yap */
+  align-items: center;        /* Dikey ortala */
+  justify-content: center; 
+  
+}
+
+.leftcorner-panel label {
   color: #f0f0f09a;
-  font-size: 1.5rem;
-  display: flexbox;
-  margin-bottom: 0.5rem;
+  font-size: 4rem;
+ 
 }
 
-.year-slider input[type="range"] {
+.right-panel-container {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.scene {
   width: 100%;
-  height: 6px;
-  background: linear-gradient(to right, #4683b456, #4682B4);
-  border-radius: 0px;
-  appearance: none;
-  cursor: pointer;
+  height: 100%;
+  flex: 1;
+  /* position: relative; */
+  background-color: #9986a073;
+  box-sizing: border-box;
+  
 }
 
-.year-slider input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 5%;
-  background: #97a7b49d;
-  border: 2px solid #4682B4;
-  transition: transform 0.2s ease;
+.bottom-bar {
+  position: relative;
+  width: 100%;
+  height: 12vh;
+  background-color: #8a76d266;
+  padding: 0; 
+  box-sizing: border-box;
+  border: 1px solid #7474748d;
+  z-index: 100;
 }
-
-.year-slider input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
-
-.year-slider input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #7d7d7d9c;
-  border: 2px solid #676767;
-}
-
-
-
 

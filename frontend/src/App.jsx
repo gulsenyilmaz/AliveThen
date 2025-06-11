@@ -10,13 +10,14 @@ import { TextLayer } from '@deck.gl/layers';
 import Map from "react-map-gl";
 
 
-import ColorLibrary from "./utils/ColorLibrary"; // Eğer ColorLibrary kullanacaksanız
+import ColorLibrary from "./utils/ColorLibrary"; 
 import { offsetFibonacciPosition } from "./utils/offsetPosition";
 
 import countryCoords from './data/country_coords.json';
 import BottomPanel from './components/BottomPanel';
 import FilterPanel from "./components/FilterPanel";
 import Dashboard from "./components/Dashborad";
+import TimeSlider from "./components/TimeSlider";
 
 
 const INITIAL_VIEW_STATE = {
@@ -56,7 +57,7 @@ function App() {
       } else {
         setWorks([]);
       }
-    }, [selectedPerson, debouncedYear]);  // 🔄 debouncedYear'ı da ekledim
+    }, [selectedPerson, debouncedYear]);  
   
   
   const nationalityCounts = {};
@@ -91,8 +92,8 @@ function App() {
   const arcLayer = new ArcLayer({
     id: 'artist-boxes',
     data: data ,
-    getSourcePosition: d => d.position,                // yer seviyesi
-    getTargetPosition: d => d.tposition,      // yükseğe doğru
+    getSourcePosition: d => d.position,                
+    getTargetPosition: d => d.tposition,      
     getSourceColor:  d => d.fillColor,
     getTargetColor: d => d.fillTColor,
     getWidth: d => d.age * elevationFactor,
@@ -101,7 +102,7 @@ function App() {
 
   const textLayer = new TextLayer({
     id: 'artist-names',
-    data: data.filter(d => viewState.zoom > 5), // Zoom > 3 olanlar görünsün
+    data: data.filter(d => viewState.zoom > 5), 
     getPosition: d => d.position,
     getText: d => d.name,
     getSize: 14,
@@ -118,34 +119,23 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="year-slider">
-        <label><strong>Year: {selectedYear}</strong></label>
-        <input
-          type="range"
-          min="1700"
-          max="2025"
-          step="1"
-          value={selectedYear}
-          onChange={e => setSelectedYear(Number(e.target.value))}
-        />
+    
+     
+    <div className="main-content">
+      <div className="left-panel-container">
+        <div className="left-panel">
+          <Dashboard
+            humans={humans}
+            nationalityCounts={nationalityCounts}
+            selectedYear={selectedYear}
+          />
+        </div>
+        <div className="leftcorner-panel">
+          <label><strong>YEAR: {selectedYear}</strong></label>
+        </div>
       </div>
-      <FilterPanel/>
-      
-      <BottomPanel
-        selectedPerson={selectedPerson}
-        works={works}
-        selectedYear={selectedYear}
-      />
-      <Dashboard
-        humans={humans}
-        nationalityCounts={nationalityCounts}
-        selectedYear={selectedYear}
-      />
-
-      
-      {/* Harita */}
-      <div style={{ flexGrow: 1 }}>
-        <DeckGL
+      <div className="right-panel-container">
+        <div className="scene"><DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller={true}
           onViewStateChange={({ viewState }) => setViewState(viewState)}
@@ -172,9 +162,26 @@ function App() {
             mapStyle="mapbox://styles/mapbox/light-v11"
           />
         </DeckGL>
+        <FilterPanel/></div>
+        <div className="bottom-bar">
+          
+          <TimeSlider
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+          />
+          <BottomPanel
+            selectedPerson={selectedPerson}
+            works={works}
+            selectedYear={selectedYear}
+          /> 
+          
+        </div>
       </div>
-
-       {/* <div className="header-description">
+    </div>
+      
+     
+{/* 
+       <div className="header-description">
         <p className="header-description p">
           Explore the geographic presence of artists who were alive in a given year.  
           Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
