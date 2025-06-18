@@ -18,35 +18,52 @@ import BottomPanel from './components/BottomPanel';
 import FilterPanel from "./components/FilterPanel";
 import Dashboard from "./components/Dashborad";
 import TimeSlider from "./components/TimeSlider";
+import Trends from "./components/Trends";
 
 
 const INITIAL_VIEW_STATE = {
-  latitude: 40,
-  longitude: 20, 
-  zoom: 1.5,
+  latitude: 20,
+  longitude: -40, 
+  zoom: 1.7,
   pitch: 0,
   bearing: 0
 };
 
-const elevationFactor = 0.2;
+const elevationFactor = 0.1;
 
 function App() {
 
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-  const [selectedYear, setSelectedYear] = useState(1940);
+  const [selectedYear, setSelectedYear] = useState(2025);
   const [debouncedYear] = useDebounce(selectedYear, 100);
 
   const [selectedPerson, setSelectedPerson] = useState(null);
   
   const [humans, setHumans] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [genders, setGenders] = useState({});
+  const [nationalities, setNationalities] = useState([]);
+  const [nationalityTrends, setNationalityTrends] = useState([]);
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/humans?year=${debouncedYear}`)
       .then(res => res.json())
-      .then(data => setHumans(data))
+      .then(data => {
+                      setHumans(data.humans);
+                      setNationalities(data.summary.nationalities);  
+                      setCities(data.summary.cities); 
+                      setGenders(data.summary.genders);
+                    })  
       .catch(err => console.error("API error:", err));
   }, [debouncedYear]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/nationality-trend?start_year=1700&end_year=2025&step=10`)
+      .then(res => res.json())
+      .then(data => {setNationalityTrends(data);})  
+      .catch(err => console.error("API error:", err));
+  }, [])
 
   useEffect(() => {
   if (selectedPerson) {
@@ -59,139 +76,124 @@ function App() {
       }
     }, [selectedPerson, debouncedYear]);  
   
-  
-  const nationalityCounts = {};
-
   const data = humans.map(h => {
-    const nationality = h.Nationality || "Unknown";
-    const base = countryCoords[nationality] || [0, 0];
 
-    if (!nationalityCounts[nationality]) nationalityCounts[nationality] = 0;
-    const [lon, lat] = base;
-    const [lonOffset, latOffset] = offsetFibonacciPosition(lon, lat, nationalityCounts[nationality]);
-    nationalityCounts[nationality]++;
-
-    const age = debouncedYear - h.BirthYear;
-               
-
+    const age = debouncedYear - h.birth_date;
+    const lat = h.lat || 0;
+    const lon = h.lon || 0;
+    
+    
+    const [lonOffset, latOffset] = offsetFibonacciPosition(lon, lat, h.city_index);
+  
     return {
-      name: h.DisplayName,
-      cId:h.ConstituentID,
-      nationality: h.Nationality,
-      bYear: h.BirthYear,
-      dYear: h.DeathYear,
+      name: h.name,
+      id:h.id,
+      nationality: h.nationality,
+      city: h.city,
+      bYear: h.birth_date,
+      dYear: h.death_date,
       age:age,
-      position: [latOffset, lonOffset],
-      tposition: [latOffset+Math.random()*10, lonOffset+Math.random()*10],
-      fillColor: ColorLibrary.genderToColor(h.Gender, h.DeathYear-debouncedYear),
-      fillTColor: ColorLibrary.ageToColor(age, h.DeathYear-debouncedYear)
+      position: [lonOffset, latOffset],
+      tposition: [lonOffset+Math.random()*20/viewState.zoom, latOffset+Math.random()*20/viewState.zoom],
+      fillColor: ColorLibrary.genderToColor(h.gender,200-viewState.zoom*20),
+      fillTColor: ColorLibrary.ageToColor(age, h.gender),
+      arcWitdh:age * viewState.zoom/50,
     };
   });
-
+  
   
   const arcLayer = new ArcLayer({
     id: 'artist-boxes',
-    data: data ,
+    data: data.filter(d => viewState.zoom < 8) ,
     getSourcePosition: d => d.position,                
     getTargetPosition: d => d.tposition,      
     getSourceColor:  d => d.fillColor,
     getTargetColor: d => d.fillTColor,
-    getWidth: d => d.age * elevationFactor,
+    getWidth: d => d.arcWitdh,
     pickable: true,
   })
 
   const textLayer = new TextLayer({
     id: 'artist-names',
-    data: data.filter(d => viewState.zoom > 5), 
+    data: data.filter(d => viewState.zoom > 5.5), 
     getPosition: d => d.position,
     getText: d => d.name,
-    getSize: 14,
-    getColor: [255, 255, 255],
+    getSize: d => 8+d.age/5,
+    getColor: [48, 48, 48],
     sizeMinPixels: 10,
     sizeMaxPixels: 30,
     getTextAnchor: 'middle',
     getAlignmentBaseline: 'top',
     background: true,
     backgroundPadding: [2, 1],
-    getBackgroundColor: [0, 0, 0, 160],
-    pickable: false
+    getBackgroundColor: [0, 0, 0, 0],
+    pickable: true
   });
 
   return (
     <div className="app-container">
-    
-     
-    <div className="main-content">
-      <div className="left-panel-container">
-        <div className="left-panel">
-          <Dashboard
-            humans={humans}
-            nationalityCounts={nationalityCounts}
-            selectedYear={selectedYear}
-          />
+      <div className="main-content">
+        <div className="left-panel-container">
+          <div className="left-panel">
+            <Dashboard
+              humans={humans}
+              cities={cities}
+              genders={genders}
+              nationalities={nationalities}
+              nationalityTrends={nationalityTrends}
+              selectedYear={selectedYear}
+            />
+          </div>
+          <div className="leftcorner-panel">
+          </div>
         </div>
-        <div className="leftcorner-panel">
-          <label><strong>YEAR: {selectedYear}</strong></label>
+        <div className="right-panel-container">
+          <div className="scene">
+            <DeckGL
+              initialViewState={INITIAL_VIEW_STATE}
+              controller={true}
+              onViewStateChange={({ viewState }) => setViewState(viewState)}
+              layers={[arcLayer, textLayer]}
+              getTooltip={({ object }) =>
+                object ? {
+                  text: `${object.name}\nAge: ${object.age}\nNationality: ${object.nationality}\nCity: ${object.city}`,
+                  style: { fontSize: "14px", color: "white" }
+                } : null
+              }
+              onClick={({ object }) => {
+                if (object) {
+                  setSelectedPerson({
+                    id: object.id,
+                    name: object.name,
+                    bYear:object.bYear,
+                    dYear:object.dYear,
+                    age: object.age
+                  });
+                }
+              }}
+            >
+            <Map
+              mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+              mapStyle="mapbox://styles/mapbox/light-v11"
+            />
+            </DeckGL>
+            <FilterPanel/>
+          </div>
+          <div className="bottom-bar">
+            <TimeSlider
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+            />
+            <BottomPanel
+              selectedPerson={selectedPerson}
+              works={works}
+              selectedYear={selectedYear}
+            /> 
+          </div>
         </div>
       </div>
-      <div className="right-panel-container">
-        <div className="scene"><DeckGL
-          initialViewState={INITIAL_VIEW_STATE}
-          controller={true}
-          onViewStateChange={({ viewState }) => setViewState(viewState)}
-          layers={[arcLayer, textLayer]}
-          getTooltip={({ object }) =>
-            object ? {
-              text: `${object.name}\nAge: ${object.age}\nNationality: ${object.nationality}`,
-              style: { fontSize: "14px", color: "white" }
-            } : null
-          }
-          onClick={({ object }) => {
-            if (object) {
-              setSelectedPerson({
-                id: object.cId,
-                name: object.name,
-                bYear:object.bYear,
-                age: object.age
-              });
-            }
-          }}
-        >
-          <Map
-            mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-            mapStyle="mapbox://styles/mapbox/light-v11"
-          />
-        </DeckGL>
-        <FilterPanel/></div>
-        <div className="bottom-bar">
-          
-          <TimeSlider
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-          />
-          <BottomPanel
-            selectedPerson={selectedPerson}
-            works={works}
-            selectedYear={selectedYear}
-          /> 
-          
-        </div>
-      </div>
-    </div>
-      
-     
-{/* 
-       <div className="header-description">
-        <p className="header-description p">
-          Explore the geographic presence of artists who were alive in a given year.  
-          Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
-        </p>
-      </div> */}
-
-    
     </div>
   );
-  
 }
 
 export default App;

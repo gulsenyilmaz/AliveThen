@@ -4,25 +4,118 @@
   left: 0rem;*/
   height: 100%;
   width: 100%; 
-  /* background-color: rgba(40, 40, 40, 0.9); */
+  background-color: rgba(40, 40, 40, 0);
   padding: 0rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.year-box{
+  position: absolute;
+  top: 6rem; 
+  right:  0rem; 
+  height:7vh;
+  width: 15vw; 
+  background-color: rgba(48, 48, 48, 0.801);
+  padding: 0rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
   gap: 1rem;
   z-index: 10;
+  color: #ffffffc0;
+  font-size: 5rem;
+  text-align: start;
+
+}
+
+.stats-row {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0);
+  background-color: #d30f9f00;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #74747400;
+  font-family: Tahoma, serif;
+  font-size: 1rem;
+  color: #0f0f0f9a;
 }
 
 
 .stats-box {
   position: relative;
   box-sizing: border-box;
-  /* box-shadow: 0 0 10px rgba(0,0,0,0.6);
-  background-color: rgba(84, 83, 83, 0.7); 
-  border-radius: 8px;*/
-  padding: 1rem;
-  
-  font-size: 2rem;
-  line-height: 1.4;
+  width: 50%; 
+  /* height: 50%; */
+  box-shadow: 0 0 2px rgba(150, 16, 16, 0);
+
+  padding: 0.5rem;
+  background-color: #15c1a200;
+  font-size: 1.5rem;
+  color: #0f0f0f9a;
+  /* line-height: 1.4; */
+  align-content: center;
   z-index: 11;
+  
+}
+.chart-box {
+  position: relative;
+  box-sizing: border-box;
+  /* width: auto; */
+  height: 100%;
+  border-radius: 2px;
+  padding: 1rem;
+  background-color: #15c1a200;
+  font-size: 1.7rem;
+  color: #0f0f0f9a;
+  /* line-height: 1.4; */
+  
+  align-content: center;
+  z-index: 11;
+  flex: 1;
+}
+
+.chart-box-title {
+ position: relative;
+  top: 0rem; 
+  left: 0rem; 
+  height:3vh;
+  width: 100%; 
+  text-align:end;
+  background-color: rgba(109, 145, 230, 0);
+  padding: 0rem;
+  box-sizing: border-box;
+ 
+  z-index: 100;
+  font-size: 2rem;
+}
+
+.info-box{
+  align-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0rem;
+  
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #999;
+
+}
+
+.divider {
+  width: 100%;
+  border: none;
+  height: 3px;
+  padding: 0rem;
+  background-color: #403f3f;
+  margin: 1rem 0;
+  opacity: 0.5;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './TimeSlider.css';
 
-const startYear = 1750;
+const startYear = 1700;
 
 function TimeSlider({selectedYear, setSelectedYear }) {
  
@@ -10,6 +10,7 @@ function TimeSlider({selectedYear, setSelectedYear }) {
     <>
     <div className="time-container">
       <div className="time-slider">
+        
            <div className="year-labels">
             {Array.from({ length: Math.floor((2025 - startYear) / 10) + 1 }, (_, index) => {
                 const year = startYear + index * 10;
@@ -22,7 +23,7 @@ function TimeSlider({selectedYear, setSelectedYear }) {
           </div>
           <input
             type="range"
-            min="1750"
+            min="1700"
             max="2025"
             step="1"
             value={selectedYear}

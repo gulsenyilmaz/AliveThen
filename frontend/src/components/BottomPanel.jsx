@@ -15,12 +15,6 @@ function BottomPanel({ selectedPerson, works, selectedYear }) {
 
   return (
     <>
-      {/* Toggle Button */}
-      {/* <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Hide Panel' : 'Show Panel'}
-      </button> */}
-
-      {/* Panel */}
       <div className={`bottom-panel ${isOpen ? "open" : ""}`}>
         <div className="bottom-tab" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? "▼" : "▲"}

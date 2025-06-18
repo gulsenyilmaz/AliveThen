@@ -8,13 +8,20 @@
 
 .works-timeline-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  /* padding: 0.5rem 1rem; */
+  justify-content:left;
+  align-items:baseline;
+  border-bottom: 1.1px solid #ccc;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
   color: white;
 }
 
+.person-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 0.2rem ;
+  color: #fff; /* isteğe bağlı */
+}
 
 
 .works-strip {

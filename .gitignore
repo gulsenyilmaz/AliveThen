@@ -25,5 +25,8 @@ dist-ssr
 
 Artists.json
 Artworks.json
+backend/old_dbs
+.env
+backend/alive_then.db
 backend/humans.db
 backend/works.db

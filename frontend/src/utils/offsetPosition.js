@@ -1,8 +1,8 @@
 
 export function offsetFibonacciPosition(baseLon, baseLat, index) {
     const goldenAngle = 2.39996; // ~137.5° in radians
-    const radius = 0.25 * Math.sqrt(index);  // sqrt büyüme ile gevşek spiral
-    const angle = index * goldenAngle;
+    const radius = 0.09 * Math.sqrt(index);  // sqrt büyüme ile gevşek spiral
+    const angle = index * goldenAngle*2;
   
     const lon = baseLon + Math.cos(angle) * radius;
     const lat = baseLat + Math.sin(angle) * radius * 1.2; // en-boy farkı için biraz dikey esneme

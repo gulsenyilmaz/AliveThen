@@ -7,9 +7,9 @@ function FilterPanel() {
   return (
     <>
       {/* Toggle Button */}
-      <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
+      {/* <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? 'Close Filters' : 'Open Filters'}
-      </button>
+      </button> */}
 
       {/* Panel */}
       <div className={`filter-panel ${isOpen ? "open" : ""}`}>
