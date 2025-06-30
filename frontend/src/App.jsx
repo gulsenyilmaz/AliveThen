@@ -241,7 +241,7 @@ function App() {
     },
     getPosition: d => d.position,
     getText: d => d.name,
-    getSize: d => 10 + (d.num_of_identifiers / 10) ,
+    getSize: d => 10 + (d.num_of_identifiers / 20) ,
     getColor: [48, 48, 48],
     sizeMinPixels: 10,
     sizeMaxPixels: 30,

@@ -5,7 +5,7 @@ export function offsetFibonacciPosition(baseLon, baseLat, index) {
     const angle = index * goldenAngle*2;
   
     const lon = baseLon + Math.cos(angle) * radius;
-    const lat = baseLat + Math.sin(angle) * radius * 1.2; // en-boy farkı için biraz dikey esneme
+    const lat = baseLat + Math.sin(angle) * radius * 2; // en-boy farkı için biraz dikey esneme
   
     return [lon, lat];
   }

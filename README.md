@@ -14,8 +14,9 @@ Inspired by the Museum of Modern Art (MoMA) collection and designed for extensib
 
 ## 📸 Screenshot
 
-![screenshot](AliveThen_Screenshot.png) <!-- Add when available -->
+![screenshot](AliveThen_Screenshot_00.png) <!-- Add when available -->
 ![screenshot](AliveThen_Screenshot_01.png) <!-- Add when available -->
+![screenshot](AliveThen_Screenshot_02.png) <!-- Add when available -->
 
 ## 🚀 Technologies
 
