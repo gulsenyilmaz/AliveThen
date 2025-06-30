@@ -32,3 +32,4 @@ backend/humans.db
 backend/works.db
 backend/db_backups
 backend/scripts
+frontend/src/data
