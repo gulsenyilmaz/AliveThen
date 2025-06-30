@@ -1,0 +1,135 @@
+
+.detail-box {
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(20, 20, 20, 0.9);
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%); /* Başlangıçta gizli */
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+}
+
+.detail-box.open {
+  transform: translateX(0%); /* Açıldığında görünür */
+}
+
+.detail-content {
+  
+  padding: 1rem;
+  width: 100%;
+  color: white;
+  overflow-y: auto;
+}
+
+/* Kulakçık (tab) */
+.detail-tab {
+  position: absolute;
+  top: 30%;
+  right: -30px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 80px;
+  background-color: #333;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  user-select: none;
+}
+
+
+.person-details {
+  padding: 1rem;
+  overflow-y: auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #eee;
+  background-color: rgba(48, 48, 48);;
+  border-top: 1px solid #444;
+}
+
+.person-details img.portrait {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.person-details p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.person-details h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: #ccc;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.3rem;
+}
+
+.person-details ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.person-details li {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.person-details li strong {
+  color: #89dceb;
+  margin-right: 0.4rem;
+}
+
+.year-box{
+  position: absolute;
+  top: 10%;
+  right: -10vw;
+  height:5vh;
+  width: 10vw; 
+  transform: translateY(-50%);
+
+  background-color: rgba(48, 48, 48, 0.801);
+  color: white;
+  font-size: 4rem;
+  padding: 3rem;
+  box-sizing: border-box;
+  display: flex;
+  
+  align-items: center;
+  justify-content: center; 
+  gap: 1rem;
+  z-index: 10;
+
+
+  text-align: center;
+
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  user-select: none;
+
+}
+
+.signature-image {
+  position: absolute;
+  top: 20%;
+  right: -10vw;
+  height:auto;
+  width: 10vw; 
+  max-width: 200px;
+  height: auto;
+  margin-top: 1rem;
+  filter: grayscale(100%);
+}

@@ -47,9 +47,9 @@ const WorksTimeline = ({ selectedPerson, works, selectedYear }) => {
 
       {works.length > 0 ? (
         <div className="works-strip">
-          {works.map(a => (
-            <div key={a.id} className="work-item">
-              {a.image_url && (
+          {works.map(a =>
+            a.image_url && (
+              <div key={a.id} className="work-item">
                 <a href={a.url} target="_blank" rel="noreferrer">
                   <img
                     src={a.image_url}
@@ -57,13 +57,13 @@ const WorksTimeline = ({ selectedPerson, works, selectedYear }) => {
                     className="work-item-img"
                   />
                 </a>
-              )}
-              <a href={a.url} target="_blank" rel="noreferrer" className="work-item-title">
-                <strong>{a.title}</strong>
-              </a>
-              <div className="work-item-meta">{a.date} · {a.description}</div>
-            </div>
-          ))}
+                {/* <a href={a.url} target="_blank" rel="noreferrer" className="work-item-title">
+                  <strong>{a.title}</strong>
+                </a>
+                <div className="work-item-meta">{a.date} · {a.description}</div> */}
+              </div>
+            )
+          )}
         </div>
       ) : (
         <p className="no-works">No works found.</p>

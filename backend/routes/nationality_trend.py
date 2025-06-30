@@ -50,8 +50,9 @@ def nationality_trend(
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT birth_date, nationality
+        SELECT birth_date, n.name AS nationality
         FROM humans
+        INNER JOIN nationalities n ON n.id = h.nationality_id
         WHERE birth_date IS NOT NULL AND birth_date != 0
         AND birth_date BETWEEN ? AND ?
     """, (start_year, end_year))

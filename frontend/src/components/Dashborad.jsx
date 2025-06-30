@@ -3,40 +3,147 @@ import Plot from 'react-plotly.js';
 import './Dashboard.css';
 import Trends from "./Trends";
 
-function Dashboard({humans, cities, genders, nationalities, nationalityTrends, selectedYear}) {
+function Dashboard({humans,nationalityTrends, selectedYear}) {
   const aliveCount = humans.length;
-  const femaleCount = genders.female ? genders.female:0;
+  let femaleCount = humans.filter(h => h.gender === 'female').length;
   const femalePct = aliveCount ? ((femaleCount / aliveCount) * 100).toFixed(1) : 0;
+
+  const nationalityCounter = {};
+  const cityCounter = {};
+  const genderCounter = {};
+
+  for (const h of humans) {
+    if (h.nationality) {
+      nationalityCounter[h.nationality] = (nationalityCounter[h.nationality] || 0) + 1;
+    }
+
+    if (h.city) {
+      cityCounter[h.city] = (cityCounter[h.city] || 0) + 1;
+    }
+
+    if (h.gender) {
+      genderCounter[h.gender] = (genderCounter[h.gender] || 0) + 1;
+    }
+  }
+
+  // En çoktan aza sırala
+  const nationalities = Object.entries(nationalityCounter).sort((a, b) => b[1] - a[1]);
+  const topNationalities = nationalities.slice(0, 10);
+  const cities = Object.entries(cityCounter).sort((a, b) => b[1] - a[1]);
+  const topCities = cities.slice(0, 10);
+  const genders = Object.entries(genderCounter).sort((a, b) => b[1] - a[1]);
+
+  // Bar chart verisi için labels ve values
+  const nationalityLabels = topNationalities.map(item => item[0]);
+  const nationalityValues = topNationalities.map(item => item[1]);
+
+  const citiesLabels = topCities.map(item => item[0]);
+  const citiesValues = topCities.map(item => item[1]);
+
+  const genderLabels = genders.map(item => item[0]);
+  const genderValues = genders.map(item => item[1]);
+
+  const colorPalette = [
+    '#4e79a7', // blue
+  '#f28e2c', // orange
+  '#e15759', // red
+  '#76b7b2', // teal
+  '#59a14f', // green
+  '#edc949', // yellow
+  '#af7aa1', // purple
+  '#ff9da7', // pink
+  '#9c755f', // brown
+  '#bab0ab', // gray-beige
+
+  // Eklenecek 5 yeni pastel uyumlu renk:
+  '#8cd17d', // soft lime green
+  '#b6992d', // ochre gold
+  '#d37295', // rose pink
+  '#5b5f97', // muted indigo
+  '#009fb7'  // strong cyan-blue
+  ];
+
+  // Basit string hash fonksiyonu
+  function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      hash = hash & hash; // Convert to 32bit int
+    }
+    return Math.abs(hash);
+  }
+
+  function getColorForNationality(nationality) {
+    const index = hashString(nationality) % colorPalette.length;
   
-  const nationalityLabels = nationalities.map(item => item[0]);
-  const nationalityValues = nationalities.map(item => item[1]);
-
-  const citiesLabels = cities.map(item => item[0]);
-  const citiesValues = cities.map(item => item[1]);
-
+    return colorPalette[index];
+  }
 
 
   return (
     <>
-      <div className="sidebar">
-        <div className="year-box">
-          <label><strong>{selectedYear}</strong></label>
-        </div>
-        
+       
         <div className='stats-row'>
-          <div className="chart-box">
-            <div className="chart-box-title"><strong>NATIONALITIES</strong></div>
-          <Trends
+          <div className="chart-box-title"><strong>NATIONALITIES</strong></div>
+            <div className="chart-box">
+              <Plot
+                  data={[
+                    {
+                      x: nationalityValues,
+                      y: nationalityLabels,
+                      type: 'bar',
+                      orientation: 'h',
+                      marker: {
+                        color: nationalityLabels.map(label => getColorForNationality(label))
+                      }
+                    }
+                  ]}
+                  layout={{
+                
+                    yaxis: {
+                      color: "gray",
+                      autorange: "reversed",
+                      tickfont: {
+                        color: "gray"
+                      },
+                      title: {
+                        font: { color: "gray" }
+                      }
+                    },
+                    xaxis: {
+                      
+                      showticklabels: false,
+                      showgrid: false,
+                      showline: false,
+                      zeroline: false,
+                    },
+                    margin: { t: 30, l: 90, r: 5, b: 10 },
+                    paper_bgcolor: 'rgba(0, 0, 0, 0)',
+                    plot_bgcolor: 'rgba(0, 0, 0, 0)',
+                    font: {
+                      color: "white"
+                    }
+                  }}
+            config={{
+                displayModeBar: false,
+                staticPlot: false   // tüm etkileşimleri devre dışı bırakır (zoom/pan)
+            }}
+            useResizeHandler={false}
+              style={{ width: "100%", height: "100%" }}
+            />
+           
+          {/* <Trends
               nationalityTrends={nationalityTrends}
               selectedYear={selectedYear}
-            />
+            /> */}
+            </div>
           </div>
-        </div>
-        <hr className="divider" />
+       
         {/* Bar chart */}
         <div className='stats-row'>
+          
           <div className="chart-box">
-            <div className="chart-box-title"><strong>CITIES</strong></div>
+            
                 <Plot
                   data={[
                     {
@@ -66,7 +173,7 @@ function Dashboard({humans, cities, genders, nationalities, nationalityTrends, s
                       showline: false,
                       zeroline: false,
                     },
-                    margin: { t: 10, l: 85, r: 10, b: 20 },
+                    margin: { t: 30, l: 90, r: 5, b: 10 },
                     paper_bgcolor: 'rgba(0, 0, 0, 0)',
                     plot_bgcolor: 'rgba(0, 0, 0, 0)',
                     font: {
@@ -78,21 +185,23 @@ function Dashboard({humans, cities, genders, nationalities, nationalityTrends, s
                 staticPlot: false   // tüm etkileşimleri devre dışı bırakır (zoom/pan)
             }}
             useResizeHandler={false}
-              style={{ width: "100%", height: "20vh" }}
+              style={{ width: "100%", height: "100%" }}
             />
             
           </div>
+          <div className="chart-box-title"><strong>CITIES</strong></div>
           </div>
-          <hr className="divider" />
+          
           <div className='stats-row'>
+            
+            <div className="chart-box-title"><strong>GENDER</strong></div>
             <div className="stats-box">
               <div><strong>Female: </strong> {femaleCount} ({femalePct}%)</div>
               <div><strong>Artists alive: </strong> {aliveCount}</div>
               <div><strong>Nationalities: </strong>{nationalities.length} </div>
             </div>
-            
             <div className="chart-box">
-              <div className="chart-box-title"><strong>GENDER</strong></div>
+              
               <Plot
                   data={[
                     {
@@ -120,28 +229,26 @@ function Dashboard({humans, cities, genders, nationalities, nationalityTrends, s
                   }}
                   config={{
                       displayModeBar: false,
-                      staticPlot: false   // tüm etkileşimleri devre dışı bırakır (zoom/pan)
+                      staticPlot: false   
                   }}
                   useResizeHandler
-                  style={{ width: "80%", height: "80%" }}
+                  style={{ width: "90%", height: "90%" }}
                 />
             </div>
             
             
           </div>
-          <hr className="divider" />
-          <div className='stats-row'>
-            <div className="info-box">
-              Explore the geographic presence of artists who were alive in a given year. Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
-            </div>
-          </div> 
+         
           {/* <div className='stats-row'>
+            
+          </div> 
+          <div className='stats-row'>
             <div className="info-box">
               Explore the geographic presence of artists who were alive in a given year. Scroll through time, uncover patterns, and see the rise and fall of artistic generations.
             </div>
           </div>  */}
           
-      </div>
+      
       {/* <div className="cornerbar"></div> */}
     </>
   );

@@ -1,0 +1,32 @@
+.year-slider {
+  padding: 0.5rem;
+  background-color: #121212;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  overflow: hidden;
+}
+
+.year-card {
+  display: inline-block;
+  min-width: 60px;
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  text-align: center;
+  background-color: #222;
+  color: #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.year-card:hover {
+  background-color: #444;
+  transform: scale(1.05);
+}
+
+.year-card.selected {
+  background-color: #89dceb;
+  color: #000;
+  font-weight: bold;
+  transform: scale(1.1);
+}

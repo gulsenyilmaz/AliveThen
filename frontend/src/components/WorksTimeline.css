@@ -13,14 +13,14 @@
   border-bottom: 1.1px solid #ccc;
   padding: 0.5rem 1rem;
   font-weight: bold;
-  color: white;
+  color: rgb(70, 70, 70);
 }
 
 .person-name {
   font-size: 1.5em;
   font-weight: bold;
   padding: 0.2rem ;
-  color: #fff; /* isteğe bağlı */
+  color: #313131; 
 }
 
 
