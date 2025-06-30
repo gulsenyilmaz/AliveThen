@@ -27,9 +27,9 @@ Artists.json
 Artworks.json
 backend/old_dbs
 .env
+frontend/src/data/
 backend/alive_then.db
 backend/humans.db
 backend/works.db
 backend/db_backups
 backend/scripts
-frontend/src/data
