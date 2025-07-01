@@ -24,6 +24,9 @@ import TimeSlider from "./components/TimeSlider";
 import DetailBox from "./components/DetailBox";
 import FilterList from "./components/FilterList";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+console.log("🔍 VITE_BACKEND_URL =", import.meta.env.VITE_BACKEND_URL);
 
 const INITIAL_VIEW_STATE = {
   latitude: 20,
@@ -72,8 +75,9 @@ function App() {
       queryParams.append("relationship_type_id", selectedLocation.relationship_type_id);
     }
 
+
     // Location detaylarını ayrı getir
-    fetch(`http://127.0.0.1:8000/location/${selectedLocation.id}`)
+    fetch(`${backendUrl}/location/${selectedLocation.id}`)
       .then(res => res.json())
       .then(data => setLocationDetails(data.details))
       .catch(err => console.error("Location details fetch error:", err));
@@ -82,7 +86,7 @@ function App() {
     }
 
     // Tüm human verilerini filtrelere göre getir
-    fetch(`http://127.0.0.1:8000/allhumans?${queryParams.toString()}`)
+    fetch(`${backendUrl}/allhumans?${queryParams.toString()}`)
       .then(res => res.json())
       .then(data => setAllHumans(data.humans))
       .catch(err => console.error("API error:", err));
@@ -99,7 +103,7 @@ function App() {
 
   useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/occupations/")
+    fetch(`${backendUrl}/occupations/`)
       .then(res => res.json())
       .then(data => {
         setOccupations(data.occupations);  // 👈 dikkat!
@@ -108,7 +112,7 @@ function App() {
 
   useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/genders/")
+    fetch(`${backendUrl}/genders/`)
       .then(res => res.json())
       .then(data => {
         setGenders(data.genders);  // 👈 dikkat!
@@ -117,7 +121,7 @@ function App() {
 
    useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/nationalities/")
+    fetch(`${backendUrl}/nationalities/`)
       .then(res => res.json())
       .then(data => {
         setNationalities(data.nationalities);  // 👈 dikkat!
@@ -129,13 +133,13 @@ function App() {
     if (selectedPerson) {
       // Eserleri getir
     
-      fetch(`http://127.0.0.1:8000/works/${selectedPerson.id}?year=${selectedYear}`)
+      fetch(`${backendUrl}/works/${selectedPerson.id}?year=${selectedYear}`)
         .then(res => res.json())
         .then(data => setWorks(data))
         .catch(err => console.error("Works fetch error:", err));
 
       // Kişisel detayları getir
-      fetch(`http://127.0.0.1:8000/person/${selectedPerson.id}`)
+      fetch(`${backendUrl}/person/${selectedPerson.id}`)
         .then(res => res.json())
         .then(data => setPersonDetails(data))
         .catch(err => console.error("Person details fetch error:", err));

@@ -27,6 +27,8 @@ dist-ssr
 
 # Project-specific ignores
 .env
+.env.development
+.env.production
 Artists.json
 Artworks.json
 frontend/src/data/

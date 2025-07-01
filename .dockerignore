@@ -1,27 +1,39 @@
-# General
+# --- Python-related ---
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.db
 *.sqlite3
-.DS_Store
-.env
-.env.*
 
-# Python virtual environments
+# Virtual environments
 venv/
 ENV/
 env/
 
-# Node dependencies and build output
-frontend/node_modules
-frontend/dist
+# --- Node.js / Frontend ---
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+frontend/src/data/  # ignore CSV & large data
 
-# OS and editor files
-*.swp
-*.swo
-*.log
+# --- Backend ---
+backend/old_dbs/
+backend/db_backups/
+backend/*.db
+backend/.env
+backend/.env.*
+
+# --- Editor/OS ---
+.DS_Store
 .idea/
 .vscode/
 *.iml
+*.log
+*.swp
+*.swo
+
+# --- Git ---
+.git
+.gitignore

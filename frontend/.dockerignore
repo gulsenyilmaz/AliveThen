@@ -1,0 +1,14 @@
+# Node build artefacts
+node_modules
+dist
+.vite
+
+# Local sensitive files
+
+src/data/  # Büyük CSV ve veri dosyaları
+
+# System/editor files
+.DS_Store
+.vscode
+.idea
+*.log

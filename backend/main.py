@@ -11,6 +11,7 @@ app = FastAPI()
 
 
 
+
 # CORS ayarı – Frontend'e veri göndermek için gerekli
 app.add_middleware(
     CORSMiddleware,
@@ -23,6 +24,9 @@ app.add_middleware(
 DB_PATH = "alive_then.db"
 
 app.include_router(nationality_trend.router)
+
+
+
 
 @app.get("/humans")
 def get_humans_by_year(year: int = Query(..., description="Selected year")):
