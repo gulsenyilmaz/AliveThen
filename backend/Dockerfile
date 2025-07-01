@@ -1,20 +1,19 @@
+FROM python:3.10-slim
 
-
-# Base image
-FROM python:3.11-slim
-
-# Set work directory
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt ./
+# Gerekli dosyaları kopyala
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy rest of the app
+# Ana uygulama dosyalarını ve veritabanını kopyala
 COPY . .
 
-# Expose FastAPI port
-EXPOSE 8000
+# .db dosyasını WORKDIR altına kopyala (bu adım önemli!)
+# Eğer .db dosyası üst klasördeyse, `COPY ../alive_then.db .` gibi olabilir
+COPY alive_then.db ./alive_then.db
 
-# Run with uvicorn (host 0.0.0.0 = container dışına açılır)
+# Ortam değişkeni ile kullanılacak yol: /app/alive_then.db
+ENV DB_PATH=/app/alive_then.db
+
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

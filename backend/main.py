@@ -5,7 +5,7 @@ import sqlite3
 from collections import Counter
 from fastapi.responses import JSONResponse
 from routes import nationality_trend
-
+import os
 
 app = FastAPI()
 
@@ -21,7 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DB_PATH = "alive_then.db"
+
+DB_PATH = os.getenv("DB_PATH", "alive_then.db")
 
 app.include_router(nationality_trend.router)
 
