@@ -92,46 +92,25 @@ html, body, #root {
 
 .main-content {
   display: flex;
+  background-color: #ffffff;
   flex: 1; 
 }
 
 .left-panel-container {
   display: flex;
   flex-direction: column;
-  width: 18vw;
+  width: 24vw;
   height: 100%;
   z-index: 100;
-  background-color: #ffffff36;
-}
-
-.left-panel {
-  flex: 1;
-  /* height: 12vh; */
-  background-color: rgba(48, 48, 48);
-  padding: 1rem;
+  /* justify-content:space-between; */
+  align-items: center;
+  background-color: #ffffff00;
+  padding: 0rem;
   box-sizing: border-box;
-  border: 1px solid #74747400;
-  box-shadow: 0 0 7px rgba(36, 36, 36, 0.5);
-}
-
-.leftcorner-panel {
-  height: 12vh;
-  background-color:  rgba(48, 48, 48);
-  padding: 1rem;
-  box-sizing: border-box;
-  border: 1px solid #7474748d;
-
-  display: flex;              
-  align-items: center;        
-  justify-content: center; 
   
 }
 
-.leftcorner-panel label {
-  color: #f0f0f09a;
-  font-size: 4rem;
- 
-}
+
 
 .right-panel-container {
   background-color: #ffffff;
@@ -140,7 +119,7 @@ html, body, #root {
   flex: 1;
   display: flex;
   flex-direction: column;
-  
+  z-index: 50;
 }
 
 .scene {
@@ -153,30 +132,69 @@ html, body, #root {
   
 }
 
-.top-bar {
+.top-dashboard-bar {
+  position:absolute;
   display: flex;
-  flex-direction: row;
   align-self:flex-end;
-  position: relative;
-  width: 70%;
-  height: 16vh;
-  background-color: #ffffff53;
-  box-shadow: 0 0 7px rgba(93, 93, 93, 0.538);
-  padding: 0; 
+ 
+  
+  width: 12vw;
+  height: 80vh;
+  background-color: #ffffff00;
   box-sizing: border-box;
+  padding: 0; 
+  
   border: 4px solid #74747400;
   z-index: 100;
 }
 
-.bottom-bar {
+.top-filter_description-bar {
+  position: absolute;
+  display: flex;
+  align-self: center;
+  /* width: 40%; */
+  /* height: 16vh; */
+  background-color: #e83a3a;
+  padding: 1rem; 
+  box-sizing: border-box;
+  border: 4px solid #74747400;
+  z-index: 1400;
+
+}
+
+.top-works-bar {
   position: relative;
   width: 100%;
+  height: 16vh;
+  background-color: #ffffff00;
+  padding: 0; 
+  box-sizing: border-box;
+  border: 4px solid #74747400;
+  z-index: 500;
+}
+
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
   height: 12vh;
   background-color: rgba(48, 48, 48, 0.801);
-  padding: 0; 
+  padding: 0;
   box-sizing: border-box;
   border: 1px solid #7474748d;
   z-index: 100;
+
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+.bottom-bar.squeezed {
+  width: 76vw;
+  transform: translateX(24vw);
 }
 
 .info-box{

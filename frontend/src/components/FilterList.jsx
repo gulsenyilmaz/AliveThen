@@ -3,124 +3,177 @@ import React, { useState, useEffect} from 'react';
 import './FilterList.css';
 import Combobox from "react-widgets/Combobox";
 import "react-widgets/styles.css";
+import NavBar from './NavBar';
 
 
-function FilterList({ selectedOccupation, 
+function FilterList({ 
+    selectedOccupation, 
     occupations, 
     setSelectedOccupation, 
-    genders, 
+    
     selectedGender, 
+    genders, 
     setSelectedGender,
-    nationalities, 
+    
     selectedNationality, 
-    setSelectedNationality }) {
-  
+    nationalities, 
+    setSelectedNationality,
+
+    selectedMovement, 
+    movements, 
+    setSelectedMovement,
+
+    searchTerm,
+    setSearchTerm,
+    searchResults,
+    setSearchResults,
+
+    setSelectedPerson,
+    setSelectedLocation
+     }) {
+
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [activeCategory, setActiveCategory] = useState("");
+    const [listSearchInput, setListSearchInput] = useState("");
+    const [listData, setListData] = useState([]);     
+
+    useEffect(() => {
+
+        switch (activeCategory) {
+            case "occupations":
+                setListData(occupations);
+                break;
+            case "genders":
+                setListData(genders);
+                break;
+            case "nationalities":
+                setListData(nationalities);
+                break;
+            case "movements":
+                setListData(movements);
+                break;
+            default:
+                break;
+        }
+        
+    }, [activeCategory]);
+
+    useEffect(() => {
+        
+        if (activeCategory){
+            
+            setSearchResults([]);
+            if (selectedItem) {
+                
+                switch (activeCategory) {
+                    case "occupations":
+                        setSelectedOccupation(selectedItem);
+                        break;
+                    case "genders":
+                        setSelectedGender(selectedItem);
+                        break;
+                    case "nationalities":
+                        setSelectedNationality(selectedItem);
+                        break;
+                    case "movements":
+                        setSelectedMovement(selectedItem);
+                        break;
+                    default:
+                        break;
+                }
+                setListData([]);
+                setActiveCategory("");
+                setListSearchInput("");
+                setSearchTerm("");
+            }    
+        }
+    }, [selectedItem]);
+
 
   return (
     <>
-
-
-      <div className="filter_list">
-
-        <div style={{ width: 300 }}>
-            <Combobox
-                data={
-                    occupations?.map((occ) => ({
-                    id: occ.id,
-                    label: `${occ.name} (${occ.count || occ.co})`
-                    })) || []
-                }
-                textField="label"
-                valueField="name"
-                filter="contains"
-                value={selectedOccupation}
-                onChange={(value) => setSelectedOccupation(value || "")}
-                placeholder="All occupations"
-                className="focus:outline-none"
+    <div className="filter_list_panel_container">
+        <NavBar
+            activeCategory={activeCategory}
+            onCategorySelect={(cat) =>{
+                    setActiveCategory(cat);
+                    setSelectedItem(null);
+            } }
+        />
+      <div className="filter_list_panel">
+        {/* 🔍 SEARCH BAR */}
+        {activeCategory=="searchbar" && (
+            <input
+                type="text"
+                className="search-bar"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search people or places..."
+                style={{ marginBottom: "0.5rem" }}
                 />
-        </div>
-
-        <div style={{ width: 300 }}>
-            <Combobox
-                data={
-                    genders?.map((gen) => ({
-                    id: gen.id,
-                    label: `${gen.name} (${gen.count || gen.cg})`
-                    })) || []
-                }
-                textField="label"
-                valueField="id"
-                filter="contains"
-                value={selectedGender}
-                onChange={(value) => setSelectedGender(value || "")}
-                placeholder="All genders"
-                className="focus:outline-none"
+        )}
+        {activeCategory && activeCategory !== "searchbar" && (
+            <input
+                type="text"
+                placeholder={`Search ${activeCategory}...`}
+                value={listSearchInput}
+                onChange={(e) => setListSearchInput(e.target.value)}
+                className="search-bar"
+                style={{ marginBottom: "0.5rem" }}
                 />
-        </div>
+        )}
+        {listData && listData.length>0 && (
+            <div className="category-list">
+                <ul>
+                    {listData
+                    .filter((item) =>
+                        item.name.toLowerCase().includes(listSearchInput.toLowerCase())
+                    )
+                    .map((item) => (
+                        <li
+                        key={item.id}
+                        onClick={() => setSelectedItem(item)}
+                        className={selectedItem?.id === item.id ? "selected" : ""}
+                        >
+                        {item.name} ({item.count})
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )}
+        {/* SEARCH RESULTS */}
+        {searchResults && (
+            <div className="search-results">
+                {searchResults.humans?.length > 0 && (
+                    <>
+                    <h4>People</h4>
+                    <ul>
+                        {searchResults.humans.map((result) => (
+                       <li key={`human-${result.id}`} onClick={() => setSelectedPerson(result)}>
+                            👤 <strong>{result.name}</strong>
+                        </li>
+                        ))}
+                    </ul>
+                    </>
+                )}
 
-         <div style={{ width: 300 }}>
-            <Combobox
-                data={
-                    nationalities?.map((nat) => ({
-                    id: nat.id,
-                    label: `${nat.name} (${nat.count || nat.cn})`
-                    })) || []
-                }
-                textField="label"
-                valueField="id"
-                filter="contains"
-                value={selectedNationality}
-                onChange={(value) => setSelectedNationality(value || "")}
-                placeholder="All nationalities"
-                className="focus:outline-none"
-                />
-        </div>
-        {/* <select
-                      
-            className="px-3 py-2 rounded-xl border border-gray-300 bg-white text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-            value={selectedOccupation}
-            onChange={(e) => setSelectedOccupation(e.target.value)}
-        >
-            <option value="">All occupations</option>
-            {occupations && occupations.map((occ) => (
-            <option key={occ.id} value={occ.id}>
-                {occ.name} ({occ.co})
-            </option>
-            ))}
-        </select>
-
-      
-
-        <select
-                      
-            className="border p-2 rounded bg-white text-black"
-            value={selectedGender}
-            onChange={(e) => setSelectedGender(e.target.value)}
-        >
-            <option value="">All genders</option>
-            {genders && genders.map((gen) => (
-            <option key={gen.id} value={gen.id}>
-                {gen.name} ({gen.cg})
-            </option>
-            ))}
-        </select>
-
-        <select
-                      
-            className="border p-2 rounded bg-white text-black"
-            value={selectedNationality}
-            onChange={(e) => setSelectedNationality(e.target.value)}
-        >
-            <option value="">All nationalities</option>
-            {nationalities && nationalities.map((nat) => (
-            <option key={nat.id} value={nat.id}>
-                {nat.name} ({nat.cn})
-            </option>
-            ))}
-        </select> */}
-        
-       
-      </div> 
+                {searchResults.locations?.length > 0 && (
+                    <>
+                    <h4>Places</h4>
+                    <ul>
+                        {searchResults.locations.map((result) => (
+                        <li key={`location-${result.id}`} onClick={() => setSelectedLocation(result)}>
+                            📍 <strong>{result.name}</strong>
+                        </li>
+                        ))}
+                    </ul>
+                    </>
+                )}
+                </div>
+        )}
+        {/* END OF SEARCH RESULTS */}
+        </div> 
+      </div>
     </>
   );
 }

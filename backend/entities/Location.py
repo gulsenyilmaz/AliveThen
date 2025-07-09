@@ -76,6 +76,7 @@ class Location:
                 except Exception as e:
                     if conn:
                         conn.close()
+                    print(f"Error setting location type: {e}")
                     return None    
             
             create_fields = []
@@ -128,6 +129,8 @@ class Location:
                 self.cursor.execute(create_sql, create_values)
                 
                 self.id = self.cursor.lastrowid
+
+                print("self.id ", self.id )
              
         if conn:
             conn.commit()

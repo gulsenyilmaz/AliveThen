@@ -5,6 +5,7 @@ import sqlite3
 from collections import Counter
 from fastapi.responses import JSONResponse
 from routes import nationality_trend
+from collections import defaultdict
 import os
 
 app = FastAPI()
@@ -91,6 +92,7 @@ def get_humans(
     qp = request.query_params
 
     occupation_id = qp.get("occupation_id")
+    movement_id = qp.get("movement_id")
     gender_id = qp.get("gender_id")
     nationality_id = qp.get("nationality_id")
     location_id = qp.get("location_id")
@@ -105,7 +107,7 @@ def get_humans(
             h.id, h.name, h.birth_date, h.death_date,
             n.name AS nationality, g.name AS gender,
             l.lat AS lat, l.lon AS lon, l.name AS city,
-            h.num_of_identifiers
+            h.num_of_identifiers, h.qid
         FROM humans h
         INNER JOIN human_location hl ON hl.human_id = h.id
         INNER JOIN locations l ON hl.location_id = l.id
@@ -133,6 +135,13 @@ def get_humans(
         base_query += """
             )
         """
+    if movement_id:
+        base_query += """
+            AND h.id IN (
+                SELECT human_id FROM human_movement WHERE movement_id = ?
+            )
+        """
+        params.append(movement_id)
 
     if occupation_id:
         base_query += """
@@ -166,43 +175,18 @@ def get_humans(
     return JSONResponse({"humans": humans})
 
 
-# @app.get("/nationalities")
-# def get_nationalities_by_year(year: int = Query(..., description="Selected year")):
-#     conn = sqlite3.connect(DB_PATH)
-#     conn.row_factory = sqlite3.Row
-#     cur = conn.cursor()
-
-#     query = """
-#         SELECT COUNT(id), nationality
-#         FROM humans
-#         GROUP BY nationality
-#         WHERE
-#         humans.birth_date IS NOT NULL
-#         AND humans.birth_date != 0
-#         AND humans.birth_date <= ?
-#         AND (humans.death_date IS NULL OR humans.death_date >= ?)
-#         AND (? - humans.birth_date) >= 21
-#         ORDER BY humans.birth_date ASC;
-#     """
-#     results = cur.execute(query, (year, year, year)).fetchall()
-#     conn.close()
-
-#     return [dict(row) for row in results]
-
-
 @app.get("/works/{creator_id}")
-def get_works(creator_id: int, year: int = Query(..., description="Selected year")):
+def get_works(creator_id: int):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id, title, date, description, image_url, url
+        SELECT id, title, created_date AS date, description, image_url, url
         FROM works
         WHERE creator_id = ?
-        AND CAST(Date AS INTEGER) <= ?
-        ORDER BY CAST(Date AS INTEGER) ASC
-    """, (creator_id, year))
+        ORDER BY created_date ASC
+    """, (creator_id,))
 
     results = [dict(row) for row in cur.fetchall()]
     conn.close()
@@ -222,23 +206,26 @@ def get_person_details(human_id: int):
     description, img_url, signature_url = row
 
     cur.execute("""
-        SELECT l.id, l.name, hlt.name AS relationship_type_name, hl.start_date, hl.end_date, l.lat, l.lon
+        SELECT l.id, l.name, hlt.name AS relationship_type_name, hl.start_date, hl.end_date, l.lat, l.lon, l.qid
         FROM human_location AS hl
         JOIN locations AS l ON l.id = hl.location_id
         JOIN human_location_types AS hlt ON hlt.id = hl.relationship_type_id
         WHERE hl.human_id = ?
     """, (human_id,))
-    locs = [{
-        "id": id,
-        "name": name,
-        "relationship_type_name": relationship_type_name,
-        "start_date": start,
-        "end_date": end,
-        "lat":lat,
-        "lon":lon,
-        "entity_type": "location",
-        "tooltip_text":name
-    } for id, name, relationship_type_name, start, end, lat, lon in cur.fetchall()]
+
+    locs = defaultdict(list)
+    for id, name, relationship_type_name, start, end, lat, lon, qid in cur.fetchall():
+        locs[relationship_type_name].append({
+            "id": id,
+            "name": name,
+            "start_date": start,
+            "end_date": end,
+            "relationship_type_name": relationship_type_name,
+            "entity_type": "location",
+            "lat": lat,
+            "lon": lon,
+            "qid" : qid
+        })        
 
     cur.execute("""
         SELECT o.name AS name
@@ -248,6 +235,16 @@ def get_person_details(human_id: int):
     """, (human_id,))
 
     occs = [row["name"] for row in cur.fetchall()] 
+
+    cur.execute("""
+        SELECT m.name AS name
+        FROM human_movement AS hm
+        JOIN movements AS m ON m.id = hm.movement_id
+        WHERE hm.human_id = ?
+    """, (human_id,))
+
+    movs = [row["name"] for row in cur.fetchall()] 
+
     conn.close()
 
     return {
@@ -255,7 +252,8 @@ def get_person_details(human_id: int):
         "img_url": img_url,
         "signature_url":signature_url,
         "locations": locs,
-        "occupations":occs
+        "occupations":occs,
+        "movements": movs
     }
 
 
@@ -266,52 +264,47 @@ def get_location_details(location_id: int):
     cur = conn.cursor()
 
    
-    cur.execute("SELECT description, image_url FROM locations WHERE id = ?", (location_id,))
+    cur.execute("SELECT description, image_url, logo_url FROM locations WHERE id = ?", (location_id,))
     row = cur.fetchone()
     if not row:
         return {"error": "location not found"}
-    description, img_url = row
+    description, img_url, logo_url = row
 
-    # # 2. relationship_type_id lookup
-    # cur.execute("SELECT id FROM human_location_types WHERE name = ?", (relationship_type_name,))
-    # rel_type_row = cur.fetchone()
-    # if not rel_type_row:
-    #     return {"error": f"relationship_type_name '{relationship_type_name}' not found"}
-    # relationship_type_id = rel_type_row["id"]
-
-    # # 3. humans at this location with given relationship
-    # query = """
-    #      SELECT 
-    #         h.id, h.name, h.birth_date, h.death_date,
-    #         n.name AS nationality, g.name AS gender,
-    #         l.lat AS lat, l.lon AS lon, l.name AS city,
-    #         h.num_of_identifiers, h.signature_url
-    #     FROM humans h
-    #     INNER JOIN human_location hl ON hl.human_id = h.id
-    #     INNER JOIN locations l ON hl.location_id = l.id
-    #     INNER JOIN genders g ON g.id = h.gender_id
-    #     INNER JOIN nationalities n ON n.id = h.nationality_id
-    #     WHERE
-    #         hl.relationship_type_id = 4
-    #         AND h.birth_date IS NOT NULL
-    #         AND h.birth_date != 0
-    #         AND h.id IN (SELECT hu.id
-    #                             FROM human_location AS hul
-    #                             INNER JOIN humans AS hu ON hu.id = hul.human_id
-    #                             WHERE hul.location_id = ? AND hul.relationship_type_id = ?)
-    #         ORDER BY h.birth_date ASC;
-    # """
-
-    # results = cur.execute(query, (location_id, relationship_type_id)).fetchall()
     conn.close()
        
     return JSONResponse({
         "details":{
             "description": description,
-            "img_url": img_url
+            "img_url": img_url,
+            "logo_url": logo_url
         }
     }) 
 
+@app.get("/movements")
+def get_movements():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    query = """
+        SELECT 
+           m.id, m.name, COUNT(hm.human_id) AS count
+        FROM human_movement hm
+        INNER JOIN movements m ON hm.movement_id = m.id
+        GROUP BY hm.movement_id
+        ORDER BY count DESC
+        LIMIT 200;
+    """
+
+    results = cur.execute(query).fetchall()
+    conn.close()
+
+    movements = [dict(row) for row in results]
+    
+       
+    return JSONResponse({
+        "movements": movements
+    }) 
 
 @app.get("/occupations")
 def get_occupations():
@@ -321,12 +314,12 @@ def get_occupations():
 
     query = """
         SELECT 
-           o.id, o.name, COUNT(ho.human_id) AS co
+           o.id, o.name, COUNT(ho.human_id) AS count
         FROM human_occupation ho
         INNER JOIN occupations o ON ho.occupation_id = o.id
         GROUP BY ho.occupation_id
-        ORDER BY co DESC
-        LIMIT 45;
+        ORDER BY count DESC
+        LIMIT 500;
     """
 
     results = cur.execute(query).fetchall()
@@ -347,11 +340,11 @@ def get_genders():
 
     query = """
         SELECT 
-           g.id, g.name, COUNT(h.gender_id) AS cg
+           g.id, g.name, COUNT(h.gender_id) AS count
         FROM genders g
         INNER JOIN humans h ON h.gender_id = g.id
         GROUP BY h.gender_id
-        ORDER BY cg DESC
+        ORDER BY count DESC
     """
 
     results = cur.execute(query).fetchall()
@@ -373,12 +366,12 @@ def get_nationalities():
 
     query = """
         SELECT 
-           n.id, n.name, COUNT(h.id) AS cn
+           n.id, n.name, COUNT(h.id) AS count
         FROM nationalities n
         INNER JOIN humans h ON h.nationality_id = n.id
         WHERE h.nationality_id IS NOT NULL
         GROUP BY n.id
-        ORDER BY cn DESC
+        ORDER BY count DESC
     """
 
     results = cur.execute(query).fetchall()
@@ -387,3 +380,42 @@ def get_nationalities():
     nationalities = [dict(row) for row in results]
     
     return JSONResponse({"nationalities": nationalities})
+
+@app.get("/search")
+def search(q: str):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    results = {
+        "humans": [],
+        "locations": []
+    }
+
+    if len(q) >= 2:
+       
+        cur.execute("""
+            SELECT id, name, birth_date, death_date, qid FROM humans
+            WHERE name LIKE ?
+            ORDER BY 
+            CASE WHEN name LIKE ? THEN 0 ELSE 1 END,
+            num_of_identifiers DESC,
+            name
+            LIMIT 10
+        """, (f"%{q}%", f"{q}%"))
+        results["humans"] = [dict(r) for r in cur.fetchall()]
+
+       
+        cur.execute("""
+            SELECT id, name, lat, lon, qid FROM locations
+            WHERE name LIKE ?
+            ORDER BY 
+            CASE WHEN name LIKE ? THEN 0 ELSE 1 END,
+            name
+            LIMIT 10
+        """, (f"%{q}%", f"{q}%"))
+        
+        
+        results["locations"] = [dict(r) for r in cur.fetchall()]
+
+    return results

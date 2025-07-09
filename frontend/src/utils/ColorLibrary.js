@@ -28,22 +28,22 @@ class ColorLibrary {
   static getLocationColorByType(type){
    
     
-    switch (type) {
-      case 'residence':
-        return [78, 121, 167, 180];
-      case 'work_location':
-        return [46, 204, 113, 180];
-      case 'educated_at':
-        return [231, 76, 60, 180];
-      case 'has_works_in':
-        return [231, 159, 120, 180];
-      case 'birth_place':
-        return [50, 76, 70, 180];
-      case 'death_place':
-        return [0, 0, 0, 180];
-      default:
-        return [150, 150, 150, 180];
-    }
+   switch (type) {
+    case 'birth_place':
+      return [39, 174, 96, 180];       // ✔ Yeşil (#27AE60)
+    case 'death_place':
+      return [240, 57, 43, 180];       // ✔ Kırmızı (#C0392B)
+    case 'educated_at':
+      return [138, 43, 226, 180];      // ✔ Mor (#9B59B6)
+    case 'residence':
+      return [52, 152, 219, 180];      // ✔ Mavi (#3498DB)
+    case 'work_location':
+      return [243, 156, 18, 180];       // ✔ Turuncu (#F39C12)
+    case 'has_works_in':
+      return [243, 156, 18, 180];      // ✔ Turuncu (#F39C12)
+    default:
+      return [75, 75, 75, 180];     // Gri (bilinmeyen)
+  }
     
 
   }

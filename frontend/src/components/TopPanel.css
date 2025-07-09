@@ -1,0 +1,76 @@
+.top-panel {
+  position: absolute;
+  top: 0; /* TimeSlider ile aynı yerden başlar */
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  /* max-height: 50vh; */
+  /* min-height: 10vh; */
+  background-color: #bcbcbcb2;
+  /* box-shadow: 0 0 7px rgba(93, 93, 93, 0.538); */
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(-80%); /* Başlangıçta gizli */
+  z-index: 1500;
+  /* display: flex;
+  flex-direction: column; */
+}
+
+
+.top-panel.open {
+  transform: translateY(0%);
+}
+
+.top-content {
+  padding: 0rem;
+  width: 100%;
+  padding: 0rem;
+  color: white;
+  box-sizing: border-box;
+ 
+  display: flex;
+  flex-direction: column;
+}
+
+/* Kulakçık (tab) */
+.top-tab {
+  position: absolute;
+  left: 15%;
+  bottom: -56.5px;
+  /* transform: translateX(-50%); */
+  rotate: 90deg; 
+  height: 80px;
+  width: 30px;
+  background-color: #bcbcbcb2;
+  /* box-shadow: 0 0 7px rgba(93, 93, 93, 0.538); */
+  border-bottom: 1.1px solid #74747400;
+  border-top: 1.1px solid #74747400;
+  border-right: 1.1px solid #74747400;
+  color: rgb(81, 81, 81);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  user-select: none;
+}
+
+.works-timeline {
+  box-sizing: border-box;
+  background-color: #59e15700;
+  max-height: 100%;
+  min-height: 15vh;
+  padding: 0rem;
+}
+
+.works-timeline-header {
+  display: flex;
+  justify-content:left;
+  align-items:baseline;
+  border-top: 1.1px solid #ebebeb;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  font-weight: bold;
+  color: rgb(70, 70, 70);
+}

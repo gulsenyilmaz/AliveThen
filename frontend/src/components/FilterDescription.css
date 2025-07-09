@@ -1,0 +1,42 @@
+.filter-description{
+    color: black;
+    font-size: 1.2rem;
+    padding: 1rem;
+    background-color: #ffffff80;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.filter-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.filter-tag {
+  background-color: #2a2a2a;
+  border-radius: 9px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  margin-left: 0.5rem;
+  margin-top: 0rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}

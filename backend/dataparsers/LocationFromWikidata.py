@@ -15,6 +15,10 @@ class LocationFromWikidata:
         self.longitude = None
         self.instance_label = ""
         self.instance_qid = None
+        self.logo_url = ""
+        self.inception = None
+        self.country_qid = None
+        self.country_label = ""
         
 
         self._fetch_and_parse()
@@ -48,6 +52,28 @@ class LocationFromWikidata:
         if "P31" in claims:
             self.instance_qid = claims["P31"][0]["mainsnak"]["datavalue"]["value"]["id"]
 
+        # Logo (P154)
+        if "P154" in claims:
+            logo_name = claims["P154"][0]["mainsnak"]["datavalue"]["value"]
+            self.logo_url = f"https://commons.wikimedia.org/wiki/Special:FilePath/{quote(logo_name)}"
+
+        # Inception (P571)
+        # if "P571" in claims:
+        #     inception_val = claims["P571"][0]["mainsnak"]["datavalue"]["value"]
+        #     self.inception = inception_val.get("time")  # ISO formatta string olabilir
+
+        # Country (P17)
+        if "P17" in claims:
+            self.country_qid = claims["P17"][0]["mainsnak"]["datavalue"]["value"]["id"]
+
+            # Ülke adını da çek
+            country_url = f"https://www.wikidata.org/wiki/Special:EntityData/{self.country_qid}.json"
+            try:
+                country_data = requests.get(country_url, headers=HEADERS).json()
+                self.country_label = country_data["entities"][self.country_qid]["labels"]["en"]["value"]
+            except:
+                pass
+
         # coordinates (P625)
         coords = None
         if "P625" in claims:
@@ -71,10 +97,14 @@ class LocationFromWikidata:
             "name": self.name,
             "description": self.description,
             "image_url": self.image_url,
+            "logo_url": self.logo_url,
             "latitude": self.latitude,
             "longitude": self.longitude,
+            "inception": self.inception,
             "instance_label": self.instance_label,
-            "instance_qid": self.instance_qid
+            "instance_qid": self.instance_qid,
+            "country_qid": self.country_qid,
+            "country_label": self.country_label
         }
 
     def __repr__(self):

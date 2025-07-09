@@ -33,7 +33,7 @@ Artists.json
 Artworks.json
 frontend/src/data/
 backend/old_dbs
-backend/alive_then.db
+# backend/alive_then.db
 backend/humans.db
 backend/works.db
 backend/db_backups

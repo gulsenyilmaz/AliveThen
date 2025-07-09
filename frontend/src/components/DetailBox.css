@@ -5,7 +5,7 @@
   left: 0;
   height: 100vh;
   width: 100%;
-  background-color: rgba(20, 20, 20, 0.9);
+  background-color: #333333;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-100%); /* Başlangıçta gizli */
   z-index: 1000;
@@ -28,12 +28,12 @@
 /* Kulakçık (tab) */
 .detail-tab {
   position: absolute;
-  top: 30%;
+  top: 65%;
   right: -30px;
   transform: translateY(-50%);
   width: 30px;
   height: 80px;
-  background-color: #333;
+  background-color: #333333;
   color: white;
   font-size: 1.5rem;
   display: flex;
@@ -49,7 +49,7 @@
 .person-details {
   padding: 1rem;
   overflow-y: auto;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #eee;
   background-color: rgba(48, 48, 48);;
   border-top: 1px solid #444;
@@ -61,6 +61,7 @@
   border-radius: 8px;
   margin-bottom: 1rem;
   display: block;
+  background-color: #ffffff;
 }
 
 .person-details p {
@@ -85,17 +86,42 @@
 
 .person-details li {
   margin-bottom: 0.4rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .person-details li strong {
   color: #89dceb;
   margin-right: 0.4rem;
 }
+.person-details li bp {
+  color: #27AE60;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+.person-details li dp {
+  color: #C0392B;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+.person-details li ea {
+  color: #9B59B6;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+.person-details li re {
+  color: #3498DB;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+.person-details li wl {
+  color: #F39C12;
+  font-size:0.8rem;
+  margin-right: 0.4rem;
+}
 
 .year-box{
   position: absolute;
-  top: 10%;
+  bottom: 10%;
   right: -10vw;
   height:5vh;
   width: 10vw; 
@@ -124,8 +150,8 @@
 
 .signature-image {
   position: absolute;
-  top: 20%;
-  right: -10vw;
+  bottom: 20%;
+  right: -75vw;
   height:auto;
   width: 10vw; 
   max-width: 200px;

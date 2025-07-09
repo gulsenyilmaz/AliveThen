@@ -1,8 +1,8 @@
 
 .time-container {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   width: 100%;
   height: 100%;
   padding: 0.5rem;;
@@ -102,4 +102,28 @@
 .year-label.active {
   color: #07efd4;
   font-weight: bold;
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.milestone-markers.bottom {
+  position: absolute;
+  top: 20px; /* slider input altına boşluk kadar mesafe */
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.milestone {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #e69b33;
+  pointer-events: auto;
+  cursor: pointer;
+  line-height: 1;
 }

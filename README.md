@@ -32,8 +32,11 @@ Inspired by the Museum of Modern Art (MoMA) collection and designed for extensib
 - Detail panel for selected artist
 
 ## 🧠 DATA SOURCE
+This project uses publicly available open data:
 
-- Museum of Modern Art Collection: https://github.com/MuseumofModernArt/collection
+- [MoMA Collection](https://github.com/MuseumofModernArt/collection) – CC0 Public Domain
+- [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page) – CC0 Public Domain
+- [The Metropolitan Museum of Art Collection](https://github.com/metmuseum/openaccess) – CC0 Public Domain
 
 ## Development Notes
 - The frontend queries data from the backend on port 8000.

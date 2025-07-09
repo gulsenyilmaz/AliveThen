@@ -149,6 +149,19 @@ class LocationType:
 
         self._getFromTable()
 
+   
+    def _normalize_location_type(self,label):
+        if not label or not isinstance(label, str):
+            return None
+
+        label_lower = label.lower().strip()
+
+        for keyword, norm_type in LocationType.KEYWORDS.items():
+            if keyword in label_lower:
+                return norm_type
+
+        return None
+
     def _getFromTable(self):
 
         conn = None
@@ -161,6 +174,10 @@ class LocationType:
             conn.row_factory = sqlite3.Row
             self.cursor = conn.cursor()
         
+        normalized_label = self._normalize_location_type(self.label)
+        if normalized_label is not None:
+            self.label = normalized_label
+
         query = "SELECT id, label FROM location_types WHERE label = ?"
         self.cursor.execute(query, (self.label,))
         row = self.cursor.fetchone()
@@ -201,18 +218,7 @@ class LocationType:
     
     
 
-@staticmethod
-def _normalize_location_type(label):
-    if not label or not isinstance(label, str):
-        return None
 
-    label_lower = label.lower().strip()
-
-    for keyword, norm_type in LocationType.KEYWORDS.items():
-        if keyword in label_lower:
-            return norm_type
-
-    return None
 
 
 def __repr__(self):

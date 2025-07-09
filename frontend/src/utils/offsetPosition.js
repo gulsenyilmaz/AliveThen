@@ -1,14 +1,26 @@
 
-export function offsetFibonacciPosition(baseLon, baseLat, index) {
-    const goldenAngle = 2.39996; // ~137.5° in radians
-    const radius = 0.1 * Math.sqrt(index);  // sqrt büyüme ile gevşek spiral
-    const angle = index * goldenAngle*2;
-  
-    const lon = baseLon + Math.cos(angle) * radius;
-    const lat = baseLat + Math.sin(angle) * radius * 2; // en-boy farkı için biraz dikey esneme
-  
-    return [lon, lat];
+export function offsetFibonacciPosition(lon, lat, index,  zoom = 1.5) {
+  const angle = index * 2.39996;
+  const radius = 0.05 * Math.sqrt(index);
+  const spreadFactor = Math.min(0.3, 1.5 / 10);
+
+  const zoomFactor = Math.max(1, 2 * zoom); // daha yakınsa daha az yay
+  const newLon = lon + radius * spreadFactor * zoomFactor * Math.cos(angle);
+  const newLat = lat + radius * spreadFactor * zoomFactor * Math.sin(angle);
+
+  return [newLon, newLat];
+}
+
+export function offsetStackedCentered(lon, lat, index, total = 1, direction = 'vertical') {
+  const spacing = 0.04;
+  const offset = (index - (total - 1) / 2) * spacing;
+
+  if (direction === 'vertical') {
+    return [lon, lat - offset];
+  } else {
+    return [lon + offset, lat];
   }
+}
 
   /*export function offsetSpiralPosition(baseLon, baseLat, index) {
     const angle = index * 0.5; // dönüş hızı

@@ -56,8 +56,8 @@ class HumanFromWikidata:
             results.append({
                 "qid": qid,
                 "relation_type": relation_type,
-                "start_time": start_time,
-                "end_time": end_time
+                "start_date": start_time,
+                "end_date": end_time
             })
         return results
 
